@@ -6,8 +6,8 @@ This problem provides practice at:
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Parker Jordan.
+"""  # Done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 ###############################################################################
 # Students:
@@ -30,7 +30,7 @@ Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
 ###############################################################################
 
 import rosegraphics as rg
-
+import math
 
 def main():
     """ Calls the   TEST   functions in this module. """
@@ -90,7 +90,7 @@ def hourglass(window, n, point, radius, color):
     a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # Done: 2. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -103,6 +103,46 @@ def hourglass(window, n, point, radius, color):
     #    TIME ESTIMATE:  25 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
 
+    point1 = point.clone()
+    oo = point.clone()
+    for i in range(n):
+        circ = rg.Circle(point, radius)
+        line = rg.Line(rg.Point(circ.center.x - circ.radius, circ.center.y),
+                       rg.Point(circ.center.x + circ.radius, circ.center.y))
+        circ.fill_color = color
+        circ.attach_to(window)
+        line.attach_to(window)
+        point1 = point.clone()
+        for j in range(i):
+            point1.x = point1.x + (2 * radius)
+            circ = rg.Circle(point1, radius)
+            line = rg.Line(rg.Point(circ.center.x - circ.radius, circ.center.y),
+                           rg.Point(circ.center.x + circ.radius, circ.center.y))
+            circ.fill_color = color
+            circ.attach_to(window)
+            line.attach_to(window)
+        point.x = point.x - radius
+        point.y = point.y - (2 * math.sin(3.14 / 3) * radius)
+    point = oo
+    for g in range(n):
+        circ = rg.Circle(point, radius)
+        line = rg.Line(rg.Point(circ.center.x - circ.radius, circ.center.y),
+                       rg.Point(circ.center.x + circ.radius, circ.center.y))
+        circ.fill_color = color
+        circ.attach_to(window)
+        line.attach_to(window)
+        oo = point.clone()
+        for h in range(g):
+            oo.x = oo.x + (2 * radius)
+            circ = rg.Circle(oo, radius)
+            line = rg.Line(rg.Point(circ.center.x - circ.radius, circ.center.y),
+                           rg.Point(circ.center.x + circ.radius, circ.center.y))
+            circ.fill_color = color
+            circ.attach_to(window)
+            line.attach_to(window)
+        point.x = point.x - radius
+        point.y = point.y + (2 * math.sin(3.14 / 3) * radius)
+    window.render()
 
 def run_test_many_hourglasses():
     """ Tests the    many_hourglasses    function. """
@@ -164,7 +204,7 @@ def many_hourglasses(window, square, m, colors):
     each of which denotes a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # Done: 3. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -181,6 +221,31 @@ def many_hourglasses(window, square, m, colors):
     #    TIME ESTIMATE:  20 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
 
+    print(square.center)
+    square.attach_to(window)
+    length = square.length_of_each_side
+    print(square.center)
+    print(square.center)
+    print()
+    len_colors = len(colors)
+    print(m)
+    for k in range(m):
+        cloney = square.center.clone()
+        if k > 0:
+            cloney.x = cloney.x + (1.5 * length)
+        # if len_colors == k:
+        if k > 1:
+            cloney.x = cloney.x + (2.5 * length)
+        if k > 2:
+            cloney.x = cloney.x + (3.5 * length)
+        hourglass(window, k + 1, cloney, length / 2, colors[k])
+    squiggles = square.center.clone()
+    for j in range(m - 1):
+        rect = rg.Rectangle(rg.Point(square.center.x - (.5 * length), square.center.y - (1.37 * length)),
+                            rg.Point(squiggles.x + (1.5 * length), squiggles.y + (1.37 * length)))
+        rect.move_by(length, 0)
+        rect.attach_to(window)
+    window.render()
 
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
